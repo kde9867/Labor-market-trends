@@ -2,7 +2,7 @@
 
 ## Overview
 A comprehensive pipeline that collects labor market-related data from labor market platforms (work24, saramin, wanted) and leverages embedding techniques to analyze trends.
-## 구조
+## Structure
 ```
 Labor-market-trends/
 ├── data/                   # Data collection and preprocessing
