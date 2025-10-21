@@ -7,8 +7,11 @@ import pandas as pd
 import requests
 
 API_URL = "https://oapi.saramin.co.kr/job-search"
-API_KEY = "hmGyQpGPOJtTMwIUnUWOouxSX8zkVxSZeStMIaujQYErrTldt0W"  
+API_KEY = "API_KEY"  
 KST = timezone(timedelta(hours=9))
+
+OUTPUT_CSV_FILE = ".path/Labor-market-trends/datasets/saramin_new.csv" # 기존 파일과의 충돌을 방지하기 위해 '_new.csv'로 저장
+LIMIT = 2000
 
 
 def _extract_text(v: Any) -> str:
@@ -164,7 +167,7 @@ def _parse_jobs(job_items: Union[List[Dict[str, Any]], Dict[str, Any], None]) ->
     return rows
 
 
-def fetch_jobs_all_fields(limit, output_path="saramin.csv"):
+def fetch_jobs_all_fields(limit, output_path):
     """
     원하는 개수(limit)만큼 페이지네이션하여 수집하고 CSV에 추가 저장
     """
@@ -270,13 +273,12 @@ def fetch_jobs_all_fields(limit, output_path="saramin.csv"):
 
 if __name__ == "__main__":
     # 사람인 API는 일일 호출 횟수가 제한되어 있어, 수집한 데이터를 동일한 파일에 덮어쓰는 방식으로 저장
-    df = fetch_jobs_all_fields(limit=2000, output_path="saramin.csv")
-    
+    df = fetch_jobs_all_fields(limit=LIMIT, output_path=OUTPUT_CSV_FILE) # 기존 파일과의 충돌을 방지하기 위해 '_new.csv'로 저장합니다.
     if df is not None:
         print(f"\n{len(df)}개 데이터 수집")
         
         # 전체 파일 통계 확인
-        full_df = pd.read_csv("saramin.csv", encoding="utf-8-sig")
+        full_df = pd.read_csv(".path/Labor-market-trends/datasets/saramin_new.csv", encoding="utf-8-sig")
         print(f"현재 파일 전체 데이터: {len(full_df)}개")
         print(f"고유 공고 수(id 기준): {full_df['id'].nunique()}개")
         print("\n추가된 5개 데이터:")

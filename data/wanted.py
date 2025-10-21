@@ -11,9 +11,9 @@ CLIENT_ID = "CLIENT_ID"
 CLIENT_SECRET = "CLIENT_SECRET"
 BASE_URL = "https://openapi.wanted.jobs/v1/jobs/"
 
-START_JOB_ID = 2000
-END_JOB_ID = 310787
-OUTPUT_FILENAME = "wanted.csv"
+START_JOB_ID = 2000 # 원티드 내 채용 공고 시작 ID 
+END_JOB_ID = 310787 # 원티드 내 채용 공고 마지막(최근) ID 
+OUTPUT_FILENAME = ".path/Labor-market-trends/datasets/wanted_new.csv"
 SAVE_INTERVAL = 100
 
 headers = {
@@ -90,30 +90,26 @@ for job_id in tqdm(range(START_JOB_ID, END_JOB_ID + 1), desc="Collection Progres
                     quoting=csv.QUOTE_ALL,
                     escapechar='\\'
                 )
-                tqdm.write(f"✅ {success_count} posts collected. Backed up data to '{OUTPUT_FILENAME}'.")
+                tqdm.write(f"{success_count} posts collected. Backed up data to '{OUTPUT_FILENAME}'.")
 
         elif response.status_code == 404:
-            # Job doesn't exist, skip silently
             pass
         elif response.status_code == 400:
-            # Bad request, skip silently (400 오류 출력 안 함)
             pass
         else:
-            # 400과 404 외의 다른 오류만 출력
-            tqdm.write(f"⚠️ Job ID {job_id}: HTTP {response.status_code}")
-
+            tqdm.write(f"Job ID {job_id}: HTTP {response.status_code}")
+            
         time.sleep(0.1)
 
     except requests.exceptions.RequestException as e:
         error_count += 1
         error_jobs.append(job_id)
-        tqdm.write(f"❌ Network error on Job ID {job_id}: {e}")
+        tqdm.write(f"Network error on Job ID {job_id}: {e}")
         time.sleep(5)
         
     except Exception as e:
         error_count += 1
         error_jobs.append(job_id)
-        tqdm.write(f"❌ Unexpected error on Job ID {job_id}: {e}")
         if all_jobs_data and len(all_jobs_data) > 0:
             try:
                 temp_df = pd.DataFrame(all_jobs_data)
@@ -124,7 +120,6 @@ for job_id in tqdm(range(START_JOB_ID, END_JOB_ID + 1), desc="Collection Progres
                     quoting=csv.QUOTE_ALL,
                     escapechar='\\'
                 )
-                tqdm.write(f"💾 Emergency backup saved to 'backup_{OUTPUT_FILENAME}'")
             except:
                 pass
 
@@ -132,8 +127,8 @@ for job_id in tqdm(range(START_JOB_ID, END_JOB_ID + 1), desc="Collection Progres
 if all_jobs_data:
     print(f"\n{'='*50}")
     print(f"Final data collection complete.")
-    print(f"✅ Successfully collected: {success_count} jobs")
-    print(f"❌ Errors encountered: {error_count} jobs")
+    print(f"Successfully collected: {success_count} jobs")
+    print(f"Errors encountered: {error_count} jobs")
     
     if error_jobs:
         print(f"\nFailed Job IDs (first 10): {error_jobs[:10]}")
@@ -147,11 +142,11 @@ if all_jobs_data:
         quoting=csv.QUOTE_ALL,
         escapechar='\\'
     )
-    print(f"✅ Successfully saved all data to '{OUTPUT_FILENAME}'.")
+    print(f"Successfully saved all data to '{OUTPUT_FILENAME}'.")
     print(f"Total rows saved: {len(final_df)}")
     print(f"{'='*50}")
 else:
-    print("\n⚠️ No new job postings were collected.")
+    print("\n No new job postings were collected.")
 
 if error_jobs:
     with open('error_jobs.txt', 'w') as f:

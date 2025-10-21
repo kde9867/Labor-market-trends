@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 # --- 설정 ---
 AUTH_KEY = "api_key" 
-OUTPUT_CSV_FILE = "work24.csv"
+OUTPUT_CSV_FILE = ".path/Labor-market-trends/datasets/work24_new.csv" # 기존 파일과의 충돌을 방지하기 위해 '_new.csv'로 저장
 
 # API 문서의 startPage 최대값: 1000
 TOTAL_PAGES = 1000
