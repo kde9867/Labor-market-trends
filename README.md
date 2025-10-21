@@ -65,3 +65,5 @@ datasets/
 - **임베딩 지형도**: 인터랙티브 HTML 형식
 - **클러스터 분석 결과**: 그룹별 특성 정리
 
+- Should you have any questions, please contact us at the following email address: kde9867@gmail.com
+
