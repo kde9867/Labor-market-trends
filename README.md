@@ -30,8 +30,6 @@ Labor-market-trends/
 - Requires scheduling and automation to be implemented for continuous data collection
 
 ### 2. Save data (`datasets/` folder)
-
-#### 폴더 구조
 ```
 datasets/            
 ├── work24.csv                    # raw data
